@@ -25,23 +25,23 @@
     "id": "01-keystatic",
     "name": "Keystatic",
     "category": "git기반",
-    "cms": "Keystatic",
-    "stack": "Astro/Next · CF Pages",
-    "url": null,
-    "warmTtfb": null,
-    "editUx": "비개발자 admin (git 커밋)",
-    "status": "planned"
+    "cms": "Keystatic 0.5",
+    "stack": "Astro 정적 + Keystatic admin · CF Pages",
+    "url": "https://ss035-keystatic.pages.dev",
+    "warmTtfb": "~50ms",
+    "editUx": "비개발자 admin (로컬/GitHub 모드)",
+    "status": "live"
   },
   {
     "id": "02-decap",
     "name": "Decap / Sveltia",
     "category": "git기반",
-    "cms": "Decap / Sveltia",
-    "stack": "Astro · CF Pages",
-    "url": null,
-    "warmTtfb": null,
-    "editUx": "비개발자 admin (git 커밋)",
-    "status": "planned"
+    "cms": "Sveltia (Decap 호환)",
+    "stack": "정적 + Sveltia admin · CF Pages",
+    "url": "https://ss035-decap.pages.dev",
+    "warmTtfb": "~46ms",
+    "editUx": "비개발자 admin (GitHub 커밋)",
+    "status": "live"
   },
   {
     "id": "04-directus",

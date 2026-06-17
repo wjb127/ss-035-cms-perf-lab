@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "title": "CMS Perf Lab · 무료 CMS 비교",
+    "description": "Cloudflare 랜딩페이지에 무료 CMS를 적용해 성능·편집UX·DX를 실측 비교하는 테스트 랩.",
+    "lang": "ko"
+  },
+  "hero": {
+    "badge": "Cloudflare 엣지 CMS",
+    "title": "콘텐츠는 직접 수정하고, 속도는 엣지에 맡기세요",
+    "subtitle": "동일한 랜딩페이지를 여러 무료 CMS로 구현해 성능·편집UX·DX를 숫자로 비교합니다. 관리자에서 글·이미지를 바꾸면 전 세계 엣지에서 서빙됩니다.",
+    "primaryCtaText": "문의하기",
+    "primaryCtaUrl": "#contact",
+    "secondaryCtaText": "관리자 패널",
+    "secondaryCtaUrl": "/admin"
+  },
+  "features": [
+    {
+      "title": "비개발자 직접 편집",
+      "description": "관리자 패널에서 텍스트·이미지를 클릭 몇 번으로 수정. 배포 없이 즉시 반영됩니다."
+    },
+    {
+      "title": "엣지에서 서빙",
+      "description": "D1 데이터베이스와 R2 스토리지가 Cloudflare 글로벌 네트워크 위에서 돌아갑니다."
+    },
+    {
+      "title": "소스 전체 소유",
+      "description": "오픈소스(MIT) 기반이라 라이선스 비용 0원. 코드와 데이터를 모두 직접 보유합니다."
+    }
+  ],
+  "ctaSection": {
+    "title": "지금 바로 콘텐츠를 직접 관리해 보세요",
+    "buttonText": "관리자 패널 열기",
+    "buttonUrl": "/admin"
+  },
+  "footerText": "© 2026 CMS Perf Lab · Cloudflare 무료 CMS 비교"
+}

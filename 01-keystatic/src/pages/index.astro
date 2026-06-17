@@ -1,0 +1,54 @@
+---
+// Keystatic이 관리하는 싱글톤(src/content/landing/index.json)을 빌드타임에 읽어 정적 렌더
+import { createReader } from '@keystatic/core/reader'
+import keystaticConfig from '../../keystatic.config'
+import fallback from '../content/landing/index.json'
+import '../styles/landing.css'
+
+const reader = createReader(process.cwd(), keystaticConfig)
+let c: any
+try {
+  c = (await reader.singletons.landing.read()) ?? fallback
+} catch {
+  c = fallback
+}
+---
+
+<!doctype html>
+<html lang={c.meta.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{c.meta.title} · Keystatic</title>
+    <meta name="description" content={c.meta.description} />
+  </head>
+  <body>
+    <main class="lp">
+      <section class="hero">
+        <span class="badge">{c.hero.badge}</span>
+        <h1>{c.hero.title}</h1>
+        <p class="subtitle">{c.hero.subtitle}</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href={c.hero.primaryCtaUrl}>{c.hero.primaryCtaText}</a>
+          <a class="btn btn-ghost" href={c.hero.secondaryCtaUrl}>{c.hero.secondaryCtaText}</a>
+        </div>
+      </section>
+
+      <section class="features">
+        {c.features.map((f: any) => (
+          <article class="feature">
+            <h3>{f.title}</h3>
+            <p>{f.description}</p>
+          </article>
+        ))}
+      </section>
+
+      <section class="cta-section" id="contact">
+        <h2>{c.ctaSection.title}</h2>
+        <a class="btn btn-primary" href={c.ctaSection.buttonUrl}>{c.ctaSection.buttonText}</a>
+      </section>
+
+      <footer class="footer">{c.footerText}</footer>
+    </main>
+  </body>
+</html>

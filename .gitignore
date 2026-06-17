@@ -27,3 +27,6 @@ implementation-notes.html
 
 # 빌드 산출물 (build.mjs로 재생성)
 dist/
+
+# Astro
+.astro/

@@ -1,0 +1,52 @@
+# Sveltia/Decap CMS 설정 — GitHub 백엔드(저장 시 repo에 커밋 → 재빌드로 반영)
+backend:
+  name: github
+  repo: wjb127/ss-035-cms-perf-lab
+  branch: main
+
+# 로컬 테스트용(개발 시): npx @sveltia/cms-proxy-server 띄우고 아래 주석 해제
+# local_backend: true
+
+media_folder: "02-decap/public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: landing
+    label: "랜딩페이지"
+    files:
+      - name: content
+        label: "랜딩 콘텐츠"
+        file: "02-decap/content/landing.json"
+        fields:
+          - label: "메타"
+            name: "meta"
+            widget: "object"
+            fields:
+              - { label: "title", name: "title", widget: "string" }
+              - { label: "description", name: "description", widget: "text", required: false }
+              - { label: "lang", name: "lang", widget: "string", default: "ko" }
+          - label: "히어로"
+            name: "hero"
+            widget: "object"
+            fields:
+              - { label: "뱃지", name: "badge", widget: "string", required: false }
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "부제", name: "subtitle", widget: "text", required: false }
+              - { label: "주 버튼 텍스트", name: "primaryCtaText", widget: "string", required: false }
+              - { label: "주 버튼 링크", name: "primaryCtaUrl", widget: "string", required: false }
+              - { label: "보조 버튼 텍스트", name: "secondaryCtaText", widget: "string", required: false }
+              - { label: "보조 버튼 링크", name: "secondaryCtaUrl", widget: "string", required: false }
+          - label: "특징"
+            name: "features"
+            widget: "list"
+            fields:
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "설명", name: "description", widget: "text", required: false }
+          - label: "하단 CTA"
+            name: "ctaSection"
+            widget: "object"
+            fields:
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "버튼 텍스트", name: "buttonText", widget: "string", required: false }
+              - { label: "버튼 링크", name: "buttonUrl", widget: "string", required: false }
+          - { label: "푸터 문구", name: "footerText", widget: "string", required: false }
