@@ -21,7 +21,10 @@ Cloudflare 랜딩에 무료 CMS들을 적용해 **성능·편집UX·DX를 실측
 | 01 | 01-keystatic | git기반 | Astro 정적 + Keystatic 로컬모드 admin |
 | 02 | 02-decap | git기반 | 정적 + Sveltia(Decap호환) admin(/admin) |
 | 03 | 03-payload-workers | 엣지(D1+R2) | Next.js15 + Payload 3.84.1 + OpenNext |
-| 04 | 04-directus | 헤드리스(셀프호스트) | Directus 11 + SQLite, Docker 로컬 |
+| 04 | 04-directus | 헤드리스(셀프호스트) | Directus 11 + SQLite, Docker 로컬 (BSL) |
+| 05 | 05-pocketbase | 헤드리스(셀프호스트) | PocketBase 0.39 단일 Go바이너리+SQLite, 로컬 (MIT) |
+
+(SonicJS = 엣지 네이티브 후보 보류: create-sonicjs 인터랙티브 TTY 이슈. 다음 1순위.)
 
 ## 후보 추가 방법 (재현 절차)
 1. `0N-<name>/` 폴더 + `build.mjs`(정적류) 또는 프레임워크 셋업

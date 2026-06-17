@@ -4,6 +4,13 @@
 
 언제 펴볼지: 외주에서 "CMS 붙여주세요" 올 때 추천 근거. 성능/트레이드오프 요약.
 
+## Lighthouse 모바일 (lighthouse 13.4.0, 단일 실행)
+| 후보 | Perf | FCP | LCP | SI |
+|---|---|---|---|---|
+| baseline / Keystatic / Sveltia | **100** | 0.8s | 0.8s | 0.8~1.1s |
+| Payload | 98 | 1.4s | 1.7s | 3.9s |
+- 정적/깃기반 3종 만점, Payload만 SI 3.9s로 확연. CLS/TBT 전부 0. "정적=성능상한" Lighthouse 재확인.
+
 ## TTFB (curl 웜 중앙값, 프로덕션)
 | 후보 | 카테고리 | 웜 TTFB | 비고 |
 |---|---|---|---|
