@@ -37,3 +37,10 @@ dist/
 
 # mem 스킬 — 시크릿/민감정보 (로컬 전용)
 memory/.private/
+
+# PocketBase 바이너리/데이터
+05-pocketbase/pocketbase
+05-pocketbase/pb_data/
+05-pocketbase/pb_migrations/
+05-pocketbase/CHANGELOG.md
+05-pocketbase/LICENSE.md

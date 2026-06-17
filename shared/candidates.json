@@ -53,5 +53,16 @@
     "warmTtfb": "로컬 only*",
     "editUx": "비개발자 admin (정밀 권한, 헤드리스 API)",
     "status": "local"
+  },
+  {
+    "id": "05-pocketbase",
+    "name": "PocketBase",
+    "category": "헤드리스 (셀프호스트)",
+    "cms": "PocketBase 0.39 (MIT)",
+    "stack": "단일 Go 바이너리 + SQLite · 로컬 (CF Workers 불가)",
+    "url": null,
+    "warmTtfb": "로컬 only*",
+    "editUx": "비개발자 admin (실시간 API, 초경량 셋업)",
+    "status": "local"
   }
 ]

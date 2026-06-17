@@ -25,6 +25,7 @@
 | 02 | Sveltia/Decap | git기반 | ~0.36s | **~0.05s** | 정적 + Sveltia admin(/admin), GitHub 백엔드 |
 | 03 | Payload on Workers | 엣지(D1+R2) | ~1.96s | ~0.22s | SSR + 매 요청 D1 글로벌 조회(force-dynamic) |
 | 04 | Directus | 헤드리스(셀프호스트) | 로컬 only* | 로컬 only* | Docker+SQLite 로컬 데모. CF 불가, 엣지 측정 불가(*localhost는 비교 무의미) |
+| 05 | PocketBase | 헤드리스(셀프호스트) | 로컬 only* | 로컬 only* | 단일 Go 바이너리+SQLite. CF 불가. 셋업 최경량(Docker 불필요) |
 
 - 측정일: 2026-06-17
 - **정적(baseline) vs 엣지CMS(Payload): 웜 TTFB 약 4배 격차** (~50ms vs ~220ms). 가설대로 정적이 성능 상한.
@@ -57,6 +58,21 @@
 - **Directus는 BSL 1.1 라이선스** (2025 변경). 순수 오픈소스(OSI) 아님 — "연 매출/펀딩/예산 $5M 미만"만 무료, 초과 시 유료. admin 진입 시 project owner 등록 모달로 고지됨.
 - **Directus는 CF Workers에 못 올림** (Node 상시 서버). 프로덕션은 Vultr VPS(Docker) 또는 Directus Cloud 필요. 이번엔 로컬 Docker로 admin/편집UX만 검증.
 - Payload/Keystatic/Sveltia는 MIT 등 OSI 오픈소스 + CF 무료티어 내 운영 가능.
+
+## 헤드리스 셀프호스트 비교 (Directus vs PocketBase)
+| | Directus 11 | PocketBase 0.39 |
+|---|---|---|
+| 셋업 | Docker(이미지 ~165MB) + compose | 단일 바이너리 ~31MB, Docker 불필요 |
+| DB | SQLite/Postgres/MySQL | SQLite 내장 |
+| 라이선스 | BSL 1.1 (매출 $5M+ 유료) | **MIT (완전 무료)** |
+| admin | 풍부·정밀 권한·관계형 | 경량·실시간 구독 |
+| CF Workers | 불가 (VPS/Cloud) | 불가 (VPS/fly.io 등) |
+- 둘 다 헤드리스 API(공개 read 설정 시 토큰 없이 조회 확인). 랜딩 렌더는 별도 프론트 필요.
+- **라이선스만 보면 PocketBase(MIT)가 Directus(BSL)보다 자유.** 셋업도 PocketBase가 압도적으로 가벼움.
+
+## SonicJS (엣지 네이티브) — 보류
+- `create-sonicjs` 스캐폴드가 인터랙티브 프롬프트(TTY) 의존 → 비대화 자동화에서 입력 깨짐. 시간 대비 보류.
+- 가치: Payload 외 유일한 "CF Workers에 올라가는 헤드리스" 후보라 다음 1순위 추가 대상.
 
 ## 카테고리별 한 줄 결론
 - **성능만**: baseline = Keystatic = Sveltia (정적, ~50ms). CMS 종류 무관, 결과물이 정적이면 동일.
