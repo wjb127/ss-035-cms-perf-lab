@@ -1,0 +1,57 @@
+[
+  {
+    "id": "00-baseline",
+    "name": "Baseline (정적)",
+    "category": "기준점",
+    "cms": "없음",
+    "stack": "순수 HTML/CSS · CF Pages",
+    "url": "https://ss035-baseline.pages.dev",
+    "warmTtfb": "~47ms",
+    "editUx": "개발자만 (코드 수정 + 재배포)",
+    "status": "live"
+  },
+  {
+    "id": "03-payload",
+    "name": "Payload on Workers",
+    "category": "엣지 (D1+R2)",
+    "cms": "Payload 3.84.1",
+    "stack": "Next.js 15 + Payload · CF Workers",
+    "url": "https://ss035-payload-cms.seungbeen-dev.workers.dev",
+    "warmTtfb": "~200ms",
+    "editUx": "비개발자 admin 패널",
+    "status": "live"
+  },
+  {
+    "id": "01-keystatic",
+    "name": "Keystatic",
+    "category": "git기반",
+    "cms": "Keystatic",
+    "stack": "Astro/Next · CF Pages",
+    "url": null,
+    "warmTtfb": null,
+    "editUx": "비개발자 admin (git 커밋)",
+    "status": "planned"
+  },
+  {
+    "id": "02-decap",
+    "name": "Decap / Sveltia",
+    "category": "git기반",
+    "cms": "Decap / Sveltia",
+    "stack": "Astro · CF Pages",
+    "url": null,
+    "warmTtfb": null,
+    "editUx": "비개발자 admin (git 커밋)",
+    "status": "planned"
+  },
+  {
+    "id": "04-directus",
+    "name": "Directus",
+    "category": "헤드리스 (셀프호스트)",
+    "cms": "Directus",
+    "stack": "Node · VPS / Directus Cloud (CF Workers 불가)",
+    "url": null,
+    "warmTtfb": null,
+    "editUx": "비개발자 admin (정밀 권한)",
+    "status": "planned"
+  }
+]

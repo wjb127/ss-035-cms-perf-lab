@@ -24,3 +24,6 @@ implementation-notes.html
 # QA 검증루프 (test-web-code)
 .qa-contract.json
 .qa-evidence.json
+
+# 빌드 산출물 (build.mjs로 재생성)
+dist/
