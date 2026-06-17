@@ -23,8 +23,13 @@ Cloudflare 랜딩에 무료 CMS들을 적용해 **성능·편집UX·DX를 실측
 | 03 | 03-payload-workers | 엣지(D1+R2) | Next.js15 + Payload 3.84.1 + OpenNext |
 | 04 | 04-directus | 헤드리스(셀프호스트) | Directus 11 + SQLite, Docker 로컬 (BSL) |
 | 05 | 05-pocketbase | 헤드리스(셀프호스트) | PocketBase 0.39 단일 Go바이너리+SQLite, 로컬 (MIT) |
+| 06 | 06-emdash | 엣지(D1+R2+KV) | EmDash CF공식 Astro SSR, CF Workers 라이브, 패스키 인증 |
 
-(SonicJS = 엣지 네이티브 후보 보류: create-sonicjs 인터랙티브 TTY 이슈. 다음 1순위.)
+배포: ss035-emdash D1 id `31f76242-7855-4d5b-9753-6c58e0321680`, KV 세션 자동프로비저닝.
+EMDASH_ENCRYPTION_KEY는 wrangler secret(.env 로컬). `npm create emdash@latest -- --yes` 비대화 OK.
+EmDash 라이브는 스타터 시드('My Site') — canonical 교체는 패스키 admin 로그인 필요(미적용).
+
+(SonicJS = 보류 확정: create-sonicjs 인터랙티브 TTY(admin email/pw 필수)라 헤드리스 자동화 2회 실패, expect도 출력 불안정. 수동 셋업 필요.)
 
 ## 후보 추가 방법 (재현 절차)
 1. `0N-<name>/` 폴더 + `build.mjs`(정적류) 또는 프레임워크 셋업
