@@ -44,3 +44,5 @@ memory/.private/
 05-pocketbase/pb_migrations/
 05-pocketbase/CHANGELOG.md
 05-pocketbase/LICENSE.md
+06-emdash/dist/
+06-emdash/.astro/

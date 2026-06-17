@@ -64,5 +64,16 @@
     "warmTtfb": "로컬 only*",
     "editUx": "비개발자 admin (실시간 API, 초경량 셋업)",
     "status": "local"
+  },
+  {
+    "id": "06-emdash",
+    "name": "EmDash",
+    "category": "엣지 (D1+R2)",
+    "cms": "EmDash (CF 공식, Astro)",
+    "stack": "Astro SSR + D1 + R2 + KV · CF Workers",
+    "url": "https://ss035-emdash.seungbeen-dev.workers.dev",
+    "warmTtfb": "~0.4s",
+    "editUx": "비개발자 admin (패스키 인증, /_emdash/admin)",
+    "status": "live"
   }
 ]

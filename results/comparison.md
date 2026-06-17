@@ -24,6 +24,7 @@
 | 01 | Keystatic | git기반 | ~0.44s | **~0.05s** | Astro 정적 빌드(빌드타임 reader), admin은 로컬/GitHub |
 | 02 | Sveltia/Decap | git기반 | ~0.36s | **~0.05s** | 정적 + Sveltia admin(/admin), GitHub 백엔드 |
 | 03 | Payload on Workers | 엣지(D1+R2) | ~1.96s | ~0.22s | SSR + 매 요청 D1 글로벌 조회(force-dynamic) |
+| 06 | EmDash (CF 공식) | 엣지(D1+R2+KV) | ~1.4s | ~0.4s | Astro SSR + D1, 302 홉 포함. CF 공식 CMS, 패스키 인증 |
 | 04 | Directus | 헤드리스(셀프호스트) | 로컬 only* | 로컬 only* | Docker+SQLite 로컬 데모. CF 불가, 엣지 측정 불가(*localhost는 비교 무의미) |
 | 05 | PocketBase | 헤드리스(셀프호스트) | 로컬 only* | 로컬 only* | 단일 Go 바이너리+SQLite. CF 불가. 셋업 최경량(Docker 불필요) |
 
@@ -69,6 +70,13 @@
 | CF Workers | 불가 (VPS/Cloud) | 불가 (VPS/fly.io 등) |
 - 둘 다 헤드리스 API(공개 read 설정 시 토큰 없이 조회 확인). 랜딩 렌더는 별도 프론트 필요.
 - **라이선스만 보면 PocketBase(MIT)가 Directus(BSL)보다 자유.** 셋업도 PocketBase가 압도적으로 가벼움.
+
+## EmDash (CF 공식 엣지 CMS) — 추가됨
+- Astro SSR + D1 + R2 + KV(세션) + Worker Loader(플러그인 샌드박스)로 CF Workers에 배포 성공.
+- `npm create emdash@latest -- --yes` 비대화 스캐폴드 OK(SonicJS와 달리 플래그 지원). `pnpm deploy`가 KV 자동 프로비저닝.
+- **Payload 외 두 번째 "CF에 올라가는" 엣지 CMS.** 엣지 SSR이라 정적군 대비 TTFB 높음(Payload급).
+- 라이브는 스타터 시드 콘텐츠("My Site") 노출 — canonical 랜딩으로 교체하려면 admin 로그인 필요(패스키 인증 셋업 위저드). 그래서 콘텐츠 패리티는 미적용.
+- 라이선스: 오픈소스(CF 공식). 패스키 우선 인증이 특징.
 
 ## SonicJS (엣지 네이티브) — 보류
 - `create-sonicjs` 스캐폴드가 인터랙티브 프롬프트(TTY) 의존 → 비대화 자동화에서 입력 깨짐. 시간 대비 보류.
