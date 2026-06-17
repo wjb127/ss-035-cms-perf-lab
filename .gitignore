@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+
+# 스크래치 스크린샷 / 작업 산출물 (루트 레벨만 — 하위 public 이미지는 보존)
+/*.png
+.playwright-mcp/
+
+# 시크릿 (안전망 — 어느 하위폴더든)
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# 의존성/빌드 (안전망)
+node_modules/
+.next/
+.open-next/
+.wrangler/
+
+# 구현 노트 (글로벌 규칙: 커밋 제외)
+implementation-notes.html
