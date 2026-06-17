@@ -3,18 +3,18 @@
 > 측정 환경: Cloudflare (APAC), curl TTFB. 모든 후보는 동일한 `shared/landing-content.json` + `shared/landing.css` 사용 (콘텐츠·디자인 단일 소스).
 > **비교 허브: https://ss035-hub.pages.dev** (라이브 나란히 비교)
 
-## Lighthouse 모바일 (로컬 Chrome, performance 단일 실행)
+## Lighthouse 모바일 (lighthouse 13.4.0, **3회 중앙값**)
 
-| # | 후보 | Perf | FCP | LCP | TBT | CLS | Speed Index |
-|---|---|---|---|---|---|---|---|
-| 00 | baseline | **100** | 0.8s | 0.8s | 0ms | 0 | 1.1s |
-| 01 | Keystatic | **100** | 0.8s | 0.8s | 0ms | 0 | 0.8s |
-| 02 | Sveltia/Decap | **100** | 0.8s | 0.8s | 0ms | 0 | 0.8s |
-| 03 | Payload | 98 | 1.4s | 1.7s | 0ms | 0 | 3.9s |
+| # | 후보 | Perf | FCP | LCP | SI | 3회 Perf |
+|---|---|---|---|---|---|---|
+| 00 | baseline | **100** | 0.8s | 0.8s | 0.8s | 100/100/100 |
+| 01 | Keystatic | **100** | 0.8s | 0.8s | 0.8s | 100/100/100 |
+| 02 | Sveltia/Decap | **100** | 0.8s | 0.8s | 0.8s | 100/100/100 |
+| 03 | Payload | 97 | 1.6s | 2.2s | 2.9s | 99/97/96 |
 
-- 측정일 2026-06-17, lighthouse 13.4.0, form-factor mobile, 단일 실행(추후 3회 중앙값으로 보강).
-- **정적/깃기반 3종 Perf 100 만점.** Payload는 98(여전히 우수)이나 FCP/LCP/SI가 2배 가까이 높음 → SSR + 엣지 DB 조회 + 큰 JS 번들의 영향. CLS·TBT는 전부 0(랜딩이 단순).
-- 결론 강화: "정적이 성능 상한"이 Lighthouse로도 확인. 차이는 체감(LCP 0.8s vs 1.7s)에서 갈림.
+- 측정일 2026-06-17, form-factor mobile, 3회 median. TBT/CLS 전부 0(랜딩 단순).
+- **정적/깃기반 3종 Perf 100 만점·완전 안정**(3회 다 100). Payload는 97(96~99 변동)에 LCP 2.2s — SSR + 매 요청 D1 조회 + 큰 JS 번들 영향.
+- "정적이 성능 상한"이 Lighthouse 3회로도 확정. 체감 차이는 LCP(0.8s vs 2.2s)에서 갈림.
 
 ## TTFB (curl, 프로덕션)
 
