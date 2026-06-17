@@ -30,3 +30,7 @@ dist/
 
 # Astro
 .astro/
+
+# Directus 로컬 런타임 데이터
+04-directus/database/
+04-directus/uploads/

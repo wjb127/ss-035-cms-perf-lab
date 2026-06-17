@@ -47,11 +47,11 @@
     "id": "04-directus",
     "name": "Directus",
     "category": "헤드리스 (셀프호스트)",
-    "cms": "Directus",
-    "stack": "Node · VPS / Directus Cloud (CF Workers 불가)",
+    "cms": "Directus 11 (BSL 1.1)",
+    "stack": "Node + SQLite · Docker 로컬 (CF Workers 불가 → VPS/Cloud)",
     "url": null,
-    "warmTtfb": null,
-    "editUx": "비개발자 admin (정밀 권한)",
-    "status": "planned"
+    "warmTtfb": "로컬 only*",
+    "editUx": "비개발자 admin (정밀 권한, 헤드리스 API)",
+    "status": "local"
   }
 ]

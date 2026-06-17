@@ -1,0 +1,20 @@
+# Directus 로컬 데모 (SQLite) — 헤드리스 셀프호스트 카테고리.
+# ⚠️ CF Workers 불가. 프로덕션은 VPS/Docker 또는 Directus Cloud.
+# 아래 KEY/SECRET/비번은 localhost 전용 데모 값.
+services:
+  directus:
+    image: directus/directus:11
+    ports:
+      - "8055:8055"
+    volumes:
+      - ./database:/directus/database
+      - ./uploads:/directus/uploads
+    environment:
+      KEY: "ss035-local-demo-key"
+      SECRET: "ss035-local-demo-secret"
+      ADMIN_EMAIL: "admin@example.com"
+      ADMIN_PASSWORD: "ClpLab-2026-demo!"
+      DB_CLIENT: "sqlite3"
+      DB_FILENAME: "/directus/database/data.db"
+      WEBSOCKETS_ENABLED: "true"
+      PUBLIC_URL: "http://localhost:8055"

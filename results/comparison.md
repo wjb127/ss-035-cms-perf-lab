@@ -11,7 +11,7 @@
 | 01 | Keystatic | git기반 | ~0.44s | **~0.05s** | Astro 정적 빌드(빌드타임 reader), admin은 로컬/GitHub |
 | 02 | Sveltia/Decap | git기반 | ~0.36s | **~0.05s** | 정적 + Sveltia admin(/admin), GitHub 백엔드 |
 | 03 | Payload on Workers | 엣지(D1+R2) | ~1.96s | ~0.22s | SSR + 매 요청 D1 글로벌 조회(force-dynamic) |
-| 04 | Directus | 헤드리스(셀프호스트) | — | — | 예정 (CF Workers 불가 → VPS/Cloud) |
+| 04 | Directus | 헤드리스(셀프호스트) | 로컬 only* | 로컬 only* | Docker+SQLite 로컬 데모. CF 불가, 엣지 측정 불가(*localhost는 비교 무의미) |
 
 - 측정일: 2026-06-17
 - **정적(baseline) vs 엣지CMS(Payload): 웜 TTFB 약 4배 격차** (~50ms vs ~220ms). 가설대로 정적이 성능 상한.
@@ -39,6 +39,16 @@
 | Payload | 비개발자 admin | admin 저장 → 수초 내 반영 (D1 eventual consistency) | 바로 됨(이미 라이브) |
 
 > 핵심 트레이드오프: **깃기반(Keystatic/Sveltia)은 성능 최강(~50ms)이지만 편집→반영에 재빌드 필요 + GitHub 인증 셋업.** Payload는 느리지만(~220ms) 비개발자가 바로 저장하면 즉시 반영.
+
+## 라이선스 / 호스팅 주의 (실측 발견)
+- **Directus는 BSL 1.1 라이선스** (2025 변경). 순수 오픈소스(OSI) 아님 — "연 매출/펀딩/예산 $5M 미만"만 무료, 초과 시 유료. admin 진입 시 project owner 등록 모달로 고지됨.
+- **Directus는 CF Workers에 못 올림** (Node 상시 서버). 프로덕션은 Vultr VPS(Docker) 또는 Directus Cloud 필요. 이번엔 로컬 Docker로 admin/편집UX만 검증.
+- Payload/Keystatic/Sveltia는 MIT 등 OSI 오픈소스 + CF 무료티어 내 운영 가능.
+
+## 카테고리별 한 줄 결론
+- **성능만**: baseline = Keystatic = Sveltia (정적, ~50ms). CMS 종류 무관, 결과물이 정적이면 동일.
+- **비개발자 즉시 편집 + 폼/DB**: Payload on Workers (엣지, ~220ms 감수). CF 단일 스택.
+- **정밀 권한·관계형 데이터·헤드리스 API**: Directus. 단 BSL 라이선스 + 별도 서버(VPS/Cloud).
 
 ## 다음 측정 항목
 - Lighthouse 모바일 Performance/LCP/FCP 3회 중앙값 (후보별)

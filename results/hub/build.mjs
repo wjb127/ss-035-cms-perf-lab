@@ -13,7 +13,9 @@ const esc = (s = '') =>
 const statusBadge = (s) =>
   s === 'live'
     ? '<span class="badge b-live">LIVE</span>'
-    : '<span class="badge b-plan">예정</span>'
+    : s === 'local'
+      ? '<span class="badge b-local">로컬</span>'
+      : '<span class="badge b-plan">예정</span>'
 
 // 지표 비교표 행
 const rows = cands
@@ -36,7 +38,9 @@ const previews = cands
   .map((c) => {
     const inner = c.url
       ? `<iframe src="${esc(c.url)}" loading="lazy" title="${esc(c.name)}"></iframe>`
-      : `<div class="ph">아직 배포 안 됨<br><span class="muted">${esc(c.stack)}</span></div>`
+      : c.status === 'local'
+        ? `<div class="ph">로컬 데모 (CF 배포 불가)<br><span class="muted">${esc(c.stack)}</span><br><span class="muted">admin 스크린샷은 QA 리포트 참조</span></div>`
+        : `<div class="ph">아직 배포 안 됨<br><span class="muted">${esc(c.stack)}</span></div>`
     return `      <figure class="preview">
         <figcaption>
           <span><b>${esc(c.name)}</b> <span class="cat">${esc(c.category)}</span></span>
@@ -69,6 +73,7 @@ const html = `<!doctype html>
   .cat { display:inline-block; font-size:11px; font-weight:700; padding:1px 8px; border-radius:6px; background:#1b2030; color:var(--muted); border:1px solid var(--border); }
   .badge { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:999px; white-space:nowrap; }
   .b-live { background:rgba(52,211,153,.12); color:var(--live); border:1px solid rgba(52,211,153,.3); }
+  .b-local { background:rgba(251,191,36,.12); color:#fbbf24; border:1px solid rgba(251,191,36,.3); }
   .b-plan { background:#1b2030; color:var(--muted); border:1px solid var(--border); }
   table { width:100%; border-collapse:collapse; font-size:14px; }
   th,td { text-align:left; padding:11px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
