@@ -40,9 +40,23 @@ cd 03-payload-workers && pnpm dev   # http://localhost:3000/admin
 - `@opennextjs/cloudflare`가 `next >=15.5.18` 요구하나 템플릿은 next 15.4.11.
 - 로컬 dev엔 무관. **배포(`pnpm run deploy`) 전 next 버전/opennext 호환 점검 필요.**
 
+## 배포 메타 (CF)
+- Worker/D1/R2 이름: `ss035-payload-cms`
+- D1 database_id: `3ad6ced1-aa67-4094-9d8f-6fb4665a0bb4` (region APAC)
+- 라이브: https://ss035-payload-cms.seungbeen-dev.workers.dev
+- PAYLOAD_SECRET: 프로덕션은 `wrangler secret put`로 별도 발급(레포 미포함). 로컬은 `.env`(gitignore).
+- 배포 절차(수동 제어, `--env=$CLOUDFLARE_ENV` 빈값 이슈 회피):
+  1. `NODE_ENV=production PAYLOAD_SECRET=ignore pnpm payload migrate` (원격 D1)
+  2. `pnpm exec opennextjs-cloudflare build`
+  3. `pnpm exec opennextjs-cloudflare deploy`
+  4. `printf "%s" "$(openssl rand -hex 32)" | wrangler secret put PAYLOAD_SECRET`
+- ⚠️ `next build` 단독 실행은 빌드 중 원격 바인딩(edge-preview 프록시)을 타므로 **D1/R2가 먼저 존재해야** 통과.
+
 ## 상태
 - [x] 로컬 dev 구동 + admin 렌더 확인
-- [ ] 첫 admin 유저 생성
-- [ ] 동일 랜딩 콘텐츠 적용 (baseline과 동일하게)
-- [ ] CF 배포(Paid Workers) + D1/R2 프로비저닝
-- [ ] Lighthouse(모바일) 3회 중앙값 + TTFB 측정 → results/comparison.md
+- [x] 동일 랜딩 콘텐츠(Landing 글로벌) 적용 — admin 편집형, 한국어
+- [x] CF 배포(Paid Workers) + D1/R2 프로비저닝
+- [x] GitHub 퍼블릭 푸시 (시크릿 격리 검증)
+- [ ] 첫 admin 유저 생성 (라이브 `/admin/create-first-user`에서 직접)
+- [ ] Lighthouse(모바일) 3회 중앙값 측정 → results/comparison.md
+- [ ] 00-baseline(순수 정적) 구축 후 성능 격차 비교
