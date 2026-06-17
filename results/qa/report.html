@@ -140,8 +140,61 @@
     <li><b>00-baseline 대비</b> — 정적 vs 엣지 CMS 성능 격차 (baseline 구축 후)</li>
   </ul>
 
+  <h2>전체 CMS 비교 (6종)</h2>
+  <p class="sub">동일 콘텐츠/디자인(<code>shared/landing-content.json</code> + <code>landing.css</code>)을 6개 CMS로 구현. 비교 허브: <a href="https://ss035-hub.pages.dev">ss035-hub.pages.dev</a></p>
+
+  <h3 style="margin-top:24px">Lighthouse 모바일 (3회 중앙값)</h3>
+  <table>
+    <thead><tr><th>후보</th><th>카테고리</th><th>Perf</th><th>FCP</th><th>LCP</th><th>SI</th></tr></thead>
+    <tbody>
+      <tr><td>baseline</td><td><span class="v">정적</span></td><td><span class="badge b-pass">100</span></td><td>0.8s</td><td>0.8s</td><td>0.8s</td></tr>
+      <tr><td>Keystatic</td><td><span class="v">git기반</span></td><td><span class="badge b-pass">100</span></td><td>0.8s</td><td>0.8s</td><td>0.8s</td></tr>
+      <tr><td>Sveltia/Decap</td><td><span class="v">git기반</span></td><td><span class="badge b-pass">100</span></td><td>0.8s</td><td>0.8s</td><td>0.8s</td></tr>
+      <tr><td>Payload</td><td><span class="v">엣지(D1)</span></td><td><span class="badge b-warn">97</span></td><td>1.6s</td><td>2.2s</td><td>2.9s</td></tr>
+      <tr><td>Directus</td><td><span class="v">헤드리스</span></td><td colspan="4" class="sub">로컬 only — CF 불가, 엣지 측정 불가</td></tr>
+      <tr><td>PocketBase</td><td><span class="v">헤드리스</span></td><td colspan="4" class="sub">로컬 only — CF 불가, 엣지 측정 불가</td></tr>
+    </tbody>
+  </table>
+  <div class="note green"><b>핵심:</b> 정적/깃기반 3종 Perf <b>100 만점(3회 다 100)</b>. Payload만 97 + LCP 2.2s — SSR·엣지DB조회·JS번들 대가. "정적이 성능 상한" Lighthouse로 확정.</div>
+
+  <h3 style="margin-top:24px">후보 매트릭스</h3>
+  <table>
+    <thead><tr><th>후보</th><th>CMS</th><th>라이선스</th><th>CF 배포</th><th>편집 주체</th><th>상태</th></tr></thead>
+    <tbody>
+      <tr><td>baseline</td><td>없음</td><td>—</td><td>Pages</td><td>개발자(코드)</td><td><span class="badge b-pass">LIVE</span></td></tr>
+      <tr><td>Keystatic</td><td>Keystatic</td><td>MIT</td><td>Pages(정적)</td><td>비개발자 admin</td><td><span class="badge b-pass">LIVE</span></td></tr>
+      <tr><td>Sveltia/Decap</td><td>Sveltia</td><td>MIT</td><td>Pages(정적)</td><td>비개발자 admin</td><td><span class="badge b-pass">LIVE</span></td></tr>
+      <tr><td>Payload</td><td>Payload 3.84</td><td>MIT</td><td>Workers+D1+R2</td><td>비개발자 admin</td><td><span class="badge b-pass">LIVE</span></td></tr>
+      <tr><td>Directus</td><td>Directus 11</td><td><span class="badge b-warn">BSL 1.1</span></td><td>불가(VPS/Cloud)</td><td>비개발자 admin</td><td><span class="badge b-warn">로컬</span></td></tr>
+      <tr><td>PocketBase</td><td>PocketBase 0.39</td><td>MIT</td><td>불가(VPS)</td><td>비개발자 admin</td><td><span class="badge b-warn">로컬</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:24px">관리자(admin) 편집 화면 — 5종</h3>
+  <div class="shots">
+    <figure><img src="screenshots/keystatic-admin.png" alt=""><figcaption><b>Keystatic</b> 싱글톤 에디터(TS 네이티브, 로컬모드)</figcaption></figure>
+    <figure><img src="screenshots/decap-admin.png" alt=""><figcaption><b>Sveltia/Decap</b> GitHub 백엔드 로그인</figcaption></figure>
+    <figure><img src="screenshots/directus-admin.png" alt=""><figcaption><b>Directus</b> 싱글톤 콘텐츠(BSL 라이선스 모달)</figcaption></figure>
+    <figure><img src="screenshots/pocketbase-admin.png" alt=""><figcaption><b>PocketBase</b> 레코드 편집(단일 바이너리, 리치텍스트)</figcaption></figure>
+    <figure><img src="screenshots/hub-4live.png" alt=""><figcaption><b>비교 허브</b> 4 라이브 동시 프리뷰</figcaption></figure>
+    <figure><img src="screenshots/qa-05-dashboard.png" alt=""><figcaption><b>Payload</b> 관리자 대시보드(엣지 D1)</figcaption></figure>
+  </div>
+
+  <h2>카테고리별 결론</h2>
+  <ul>
+    <li><b>성능만</b>: baseline = Keystatic = Sveltia (정적, Perf 100). CMS 종류 무관, 결과물이 정적이면 동일.</li>
+    <li><b>비개발자 즉시 편집 + 폼/DB + CF 단일스택</b>: Payload on Workers (Perf 97 감수, admin 바로 반영).</li>
+    <li><b>정밀 권한·관계형·헤드리스</b>: Directus(단 BSL+별도서버) vs PocketBase(MIT·초경량·별도서버). 라이선스/셋업은 PocketBase 우위.</li>
+  </ul>
+
+  <h2>미완 / 다음</h2>
+  <ul>
+    <li><b>SonicJS</b>(엣지 헤드리스): create-CLI가 인터랙티브 TTY(admin email/password 필수)라 헤드리스 자동화 2회 실패 → 보류. <code>expect</code>로도 출력 안정 안 됨. 수동 셋업 또는 CI TTY 필요.</li>
+    <li>EmDash(Astro CF 공식) 추가 / Directus·PocketBase를 VPS·Cloud 실배포해 엣지 성능 측정.</li>
+  </ul>
+
   <footer>
-    ss-035 CMS Perf Lab · Payload on Workers QA · 2026-06-17 · Playwright 실브라우저 검증 · 리포지토리 <a href="https://github.com/wjb127/ss-035-cms-perf-lab">github.com/wjb127/ss-035-cms-perf-lab</a>
+    ss-035 CMS Perf Lab · 6종 비교 + Payload E2E QA · 2026-06-18 · Playwright 실브라우저 + Lighthouse 3회 · <a href="https://github.com/wjb127/ss-035-cms-perf-lab">github.com/wjb127/ss-035-cms-perf-lab</a>
   </footer>
 </div>
 </body>
