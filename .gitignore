@@ -34,3 +34,6 @@ dist/
 # Directus 로컬 런타임 데이터
 04-directus/database/
 04-directus/uploads/
+
+# mem 스킬 — 시크릿/민감정보 (로컬 전용)
+memory/.private/
