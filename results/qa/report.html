@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>QA 리포트 · Payload on Workers (ss-035)</title>
+<style>
+  :root {
+    --bg: #0b0d12; --soft: #12151d; --border: #232836;
+    --text: #e8eaf0; --muted: #9aa3b2; --accent: #f97316;
+    --pass: #34d399; --fail: #f87171; --warn: #fbbf24; --skip: #94a3b8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: system-ui, -apple-system, "Apple SD Gothic Neo", Pretendard, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 24px 96px; }
+  header { border-bottom: 1px solid var(--border); padding-bottom: 28px; margin-bottom: 36px; }
+  h1 { font-size: clamp(26px, 4vw, 38px); font-weight: 800; letter-spacing: -0.02em; margin: 0 0 10px; }
+  h2 { font-size: 22px; font-weight: 700; margin: 48px 0 16px; letter-spacing: -0.01em; }
+  h3 { font-size: 16px; font-weight: 700; margin: 0 0 6px; }
+  .sub { color: var(--muted); font-size: 15px; }
+  a { color: var(--accent); }
+  .meta { display: flex; flex-wrap: wrap; gap: 10px 28px; margin-top: 18px; font-size: 14px; color: var(--muted); }
+  .meta b { color: var(--text); font-weight: 600; }
+  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 24px 0 8px; }
+  @media (max-width: 720px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+  .card { background: var(--soft); border: 1px solid var(--border); border-radius: 14px; padding: 18px; text-align: center; }
+  .card .n { font-size: 30px; font-weight: 800; }
+  .card .l { font-size: 13px; color: var(--muted); margin-top: 4px; }
+  .n.pass { color: var(--pass); } .n.fail { color: var(--fail); } .n.warn { color: var(--warn); } .n.skip { color: var(--skip); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 8px; }
+  th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .badge { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+  .b-pass { background: rgba(52,211,153,.12); color: var(--pass); border: 1px solid rgba(52,211,153,.3); }
+  .b-fail { background: rgba(248,113,113,.12); color: var(--fail); border: 1px solid rgba(248,113,113,.3); }
+  .b-warn { background: rgba(251,191,36,.12); color: var(--warn); border: 1px solid rgba(251,191,36,.3); }
+  .v { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 6px; background: #1b2030; color: var(--muted); border: 1px solid var(--border); }
+  .shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 18px; }
+  @media (max-width: 720px) { .shots { grid-template-columns: 1fr; } }
+  figure { margin: 0; background: var(--soft); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+  figure img { width: 100%; display: block; border-bottom: 1px solid var(--border); background: #000; }
+  figcaption { padding: 12px 14px; font-size: 13px; color: var(--muted); }
+  figcaption b { color: var(--text); font-weight: 600; display: block; margin-bottom: 2px; }
+  .note { background: var(--soft); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 10px; padding: 16px 18px; margin: 14px 0; font-size: 14.5px; }
+  .note.green { border-left-color: var(--pass); }
+  .note.warn { border-left-color: var(--warn); }
+  ul { margin: 8px 0; padding-left: 20px; }
+  li { margin: 5px 0; font-size: 14.5px; }
+  code { background: #1b2030; padding: 1px 6px; border-radius: 5px; font-size: 13px; }
+  footer { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>QA 리포트 — Payload on Workers</h1>
+    <p class="sub">ss-035 CMS 성능 비교 랩 · 03-payload-workers 후보 라이브 E2E 검증</p>
+    <div class="meta">
+      <span><b>대상</b> <a href="https://ss035-payload-cms.seungbeen-dev.workers.dev">ss035-payload-cms.seungbeen-dev.workers.dev</a></span>
+      <span><b>측정일</b> 2026-06-17</span>
+      <span><b>방식</b> Playwright 실브라우저 (사람 행동 등가, 우회 0)</span>
+      <span><b>스택</b> Next.js 15 + Payload 3.84.1 + D1 + R2 + OpenNext</span>
+    </div>
+  </header>
+
+  <section class="cards">
+    <div class="card"><div class="n">11</div><div class="l">시나리오</div></div>
+    <div class="card"><div class="n pass">11</div><div class="l">PASS</div></div>
+    <div class="card"><div class="n fail">0</div><div class="l">FAIL</div></div>
+    <div class="card"><div class="n warn">3</div><div class="l">관찰/주의</div></div>
+  </section>
+  <p class="sub">happy 5 / sad 3 / bad 2 / observe 1 — 모든 액션은 실제 키보드 입력·클릭으로 수행. 인증 우회(httpCredentials·storageState·쿠키주입) <b>0건</b>.</p>
+
+  <h2>결과 요약</h2>
+  <table>
+    <thead><tr><th>#</th><th>Flow</th><th>시나리오</th><th>변형</th><th>결과</th><th>증거</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>공개 랜딩</td><td>데스크탑 로드 + 핵심 섹션 노출 (HTTP 200)</td><td><span class="v">happy</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-01</td></tr>
+      <tr><td>2</td><td>공개 랜딩</td><td>모바일 390px 반응형 레이아웃</td><td><span class="v">happy</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-02</td></tr>
+      <tr><td>3</td><td>공개 랜딩</td><td>존재하지 않는 경로 → 404</td><td><span class="v">sad</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-03</td></tr>
+      <tr><td>4</td><td>인증</td><td>첫 관리자 계정 생성 (폼 입력)</td><td><span class="v">happy</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-04</td></tr>
+      <tr><td>5</td><td>인증</td><td>계정 생성 → 대시보드 진입</td><td><span class="v">happy</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-05</td></tr>
+      <tr><td>6</td><td>CMS 편집</td><td>랜딩 글로벌 편집 화면 진입</td><td><span class="v">happy</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-06</td></tr>
+      <tr><td>7</td><td>CMS 편집</td><td>히어로 제목 수정 → 저장 (Updated successfully)</td><td><span class="v">happy</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-07 · qa-08</td></tr>
+      <tr><td>8</td><td>CMS 편집</td><td><b>수정 내용이 공개 랜딩에 반영</b> (CMS 작동 증명)</td><td><span class="v">happy</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-09</td></tr>
+      <tr><td>9</td><td>인증</td><td>미인증 상태로 보호 페이지 접근 → 로그인 리다이렉트</td><td><span class="v">bad</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-10</td></tr>
+      <tr><td>10</td><td>인증</td><td>틀린 비밀번호 로그인 → 401 거부, 로그인 페이지 잔류</td><td><span class="v">sad</span></td><td><span class="badge b-pass">PASS</span></td><td>qa-11</td></tr>
+      <tr><td>11</td><td>API</td><td>보호 컬렉션 <code>/api/users</code> 미인증 접근 → 403</td><td><span class="v">bad</span></td><td><span class="badge b-pass">PASS</span></td><td>curl</td></tr>
+    </tbody>
+  </table>
+
+  <h2>핵심 증명 — CMS 편집이 랜딩에 반영</h2>
+  <div class="note green">관리자 패널에서 히어로 제목을 <code>"관리자가 방금 수정한 제목입니다 — E2E 반영 테스트"</code>로 바꿔 저장하자, 공개 랜딩페이지에 그대로 노출됨. 즉 <b>비개발자가 코드/배포 없이 콘텐츠를 직접 바꿀 수 있다</b>는 CMS의 핵심 가치가 라이브에서 실증됨. (검증 후 원본 제목으로 원복 완료 — 라이브 클린)</div>
+  <div class="shots">
+    <figure><img src="screenshots/qa-07-edit-title-changed.png" alt="제목 수정"><figcaption><b>① 관리자에서 제목 수정</b>히어로 제목 필드를 테스트 문구로 변경</figcaption></figure>
+    <figure><img src="screenshots/qa-08-save-success.png" alt="저장 성공"><figcaption><b>② 저장 성공</b>"Updated successfully" 토스트</figcaption></figure>
+    <figure><img src="screenshots/qa-09-landing-reflected.png" alt="랜딩 반영"><figcaption><b>③ 공개 랜딩에 반영</b>수정한 제목이 <code>/</code>에 즉시 노출</figcaption></figure>
+    <figure><img src="screenshots/qa-01-landing-desktop.png" alt="원본 랜딩"><figcaption><b>(원복 후) 원본 랜딩</b>검증 종료 후 원래 콘텐츠로 복원</figcaption></figure>
+  </div>
+
+  <h2>전체 스크린샷</h2>
+  <div class="shots">
+    <figure><img src="screenshots/qa-01-landing-desktop.png" alt=""><figcaption><b>qa-01 · 공개 랜딩 (데스크탑)</b>히어로 / 특징 3 / 하단 CTA / 푸터</figcaption></figure>
+    <figure><img src="screenshots/qa-02-landing-mobile.png" alt=""><figcaption><b>qa-02 · 공개 랜딩 (모바일 390px)</b>특징 카드 세로 스택, 반응형 정상</figcaption></figure>
+    <figure><img src="screenshots/qa-03-404.png" alt=""><figcaption><b>qa-03 · 404</b>없는 경로 → "This page could not be found"</figcaption></figure>
+    <figure><img src="screenshots/qa-04-create-first-user.png" alt=""><figcaption><b>qa-04 · 첫 계정 생성</b>email / password / confirm</figcaption></figure>
+    <figure><img src="screenshots/qa-05-dashboard.png" alt=""><figcaption><b>qa-05 · 관리자 대시보드</b>Collections(Users·Media) + Globals(랜딩페이지)</figcaption></figure>
+    <figure><img src="screenshots/qa-06-edit-global-before.png" alt=""><figcaption><b>qa-06 · 랜딩 글로벌 편집</b>히어로·특징·CTA·푸터 한국어 필드</figcaption></figure>
+    <figure><img src="screenshots/qa-10-unauth-redirect-login.png" alt=""><figcaption><b>qa-10 · 미인증 차단</b>보호 페이지 → <code>/admin/login?redirect=…</code></figcaption></figure>
+    <figure><img src="screenshots/qa-11-wrong-password-401.png" alt=""><figcaption><b>qa-11 · 틀린 비번</b>401 거부, 로그인 페이지 잔류</figcaption></figure>
+  </div>
+
+  <h2>실측 발견 / 주의사항</h2>
+  <div class="note warn"><b>① D1 전파 지연 (eventual consistency)</b><br>
+  콘텐츠 저장 직후 공개 <code>/</code>가 잠깐 이전 값을 보였다가 수초 내 새 값으로 수렴. 응답 헤더는 <code>cache-control: private, no-cache, no-store</code>라 HTTP/CDN 캐시는 아님 → 원격 D1 바인딩의 읽기 일관성 지연으로 추정. <b>운영상 "수정 즉시 100% 반영"은 아니고 수초 지연 가능</b>. (편집 UX 평가에 반영)</div>
+  <div class="note warn"><b>② 콜드 스타트</b><br>
+  유휴 후 첫 요청 TTFB ~2s, 이후 웜 ~0.2s. 트래픽 적은 랜딩은 첫 방문자가 콜드스타트를 맞을 수 있음.</div>
+  <div class="note warn"><b>③ 이메일 어댑터 미설정</b><br>
+  비밀번호 재설정 / 이메일 인증 / 폼 알림 메일은 어댑터(Resend·nodemailer) 미설정이라 <b>실제 발송 안 됨</b>(콘솔 출력만). 로그인 자체는 영향 없음. 폼/리드 알림까지 테스트하려면 어댑터 추가 필요.</div>
+
+  <h2>정직성 — 자동화 우회 감사</h2>
+  <div class="note green">모든 E2E 액션은 실제 사람이 브라우저에서 할 수 있는 행동(키보드 입력, 클릭, URL 입력)만 사용. 아래 false-green 유발 우회 <b>전부 0건</b>:
+  <ul>
+    <li><code>httpCredentials</code> / <code>extraHTTPHeaders</code> Authorization 주입 — 0</li>
+    <li><code>storageState</code> 사전 주입 / 쿠키·세션스토리지 직접 주입 — 0</li>
+    <li>URL-embedded credentials / API 직접 호출로 인증 상태 위조 — 0</li>
+  </ul>
+  관리자 첫 계정 생성과 로그인 모두 폼에 직접 타이핑 + 클릭으로 수행했으므로, "통과"는 실제 사용자도 동일 흐름을 완료할 수 있음을 의미함.</div>
+
+  <h2>미검증 (별도 필요)</h2>
+  <ul>
+    <li><b>이미지 R2 업로드</b> — Media 컬렉션 업로드 흐름 (시간상 생략)</li>
+    <li><b>Stored XSS sanitize</b> — React JSX 자동 이스케이프에 의존. 라이브 콘텐츠 오염 방지 위해 실주입 미검증</li>
+    <li><b>Lighthouse 모바일 성능</b> — Performance/LCP/FCP 3회 중앙값 (별도 측정 예정)</li>
+    <li><b>이메일 발송</b> — 어댑터 설치 후 메일박스 수신 확인 필요</li>
+    <li><b>00-baseline 대비</b> — 정적 vs 엣지 CMS 성능 격차 (baseline 구축 후)</li>
+  </ul>
+
+  <footer>
+    ss-035 CMS Perf Lab · Payload on Workers QA · 2026-06-17 · Playwright 실브라우저 검증 · 리포지토리 <a href="https://github.com/wjb127/ss-035-cms-perf-lab">github.com/wjb127/ss-035-cms-perf-lab</a>
+  </footer>
+</div>
+</body>
+</html>

@@ -20,3 +20,7 @@ node_modules/
 
 # 구현 노트 (글로벌 규칙: 커밋 제외)
 implementation-notes.html
+
+# QA 검증루프 (test-web-code)
+.qa-contract.json
+.qa-evidence.json
